@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.anshultech.miriambakery.Adapters.BakeryDetailsRecyclerViewAdapter;
@@ -57,6 +58,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
     private TextView favoriteDetailsCountTextView;
     private List<BakeryStepsListBean> favoriteBakeryStepsListBeans;
     private ImageView plusMinusDetailsButton;
+    private RelativeLayout favotiteRelativeLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
 
         //Firebase initialization
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-
+        mDatabaseReference = mFirebaseDatabase.getReference().child("FavoriteStepsList");
 
         //favoriteList Initialization
         favoriteBakeryStepsListBeans = new ArrayList<>();
@@ -81,8 +83,10 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
         favoriteListView.setLayoutManager(new LinearLayoutManager(mContext));
         favoriteDetailsCountTextView = (TextView) findViewById(R.id.favoriteDetailsCountTextView);
         plusMinusDetailsButton = (ImageView) findViewById(R.id.plusDetailsButton);
+        favotiteRelativeLayout = (RelativeLayout) findViewById(R.id.favotiteRelativeLayout);
+        favotiteRelativeLayout.setVisibility(View.VISIBLE);
         favoriteListView.setVisibility(View.GONE);
-        mDatabaseReference = mFirebaseDatabase.getReference().child("FavoriteStepsList");
+
         valueFavouriteListListener();
         plusMinusDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,10 +134,9 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
     private void loadRecipieListItems() {
 
         if (RECIPE_LIST_TYPE.equalsIgnoreCase("Ingredients")) {
+            favotiteRelativeLayout.setVisibility(View.GONE);
             getSupportActionBar().setTitle(getResources().getString(R.string.RecipieIngredients));
             mBakeryIngridentsListBeans = getIntent().getExtras().getParcelableArrayList(getResources().getString(R.string.ingredient_list));
-
-
             if (mBakeryIngridentsListBeans != null) {
 
                 mbBakeryDetailsRecyclerViewAdapter = new BakeryDetailsRecyclerViewAdapter(mContext, mBakeryIngridentsListBeans
@@ -211,7 +214,7 @@ public class BakerryRecipieDetailViewActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 BakeryStepsListBean bakeryStepsListBean = dataSnapshot.getValue(BakeryStepsListBean.class);
-                if(favoriteBakeryStepsListBeans!=null && favoriteBakeryStepsListBeans.size()>0) {
+                if (favoriteBakeryStepsListBeans != null && favoriteBakeryStepsListBeans.size() > 0) {
                     favoriteBakeryStepsListBeans.clear();
                 }
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
