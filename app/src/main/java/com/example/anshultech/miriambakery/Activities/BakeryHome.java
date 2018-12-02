@@ -95,15 +95,8 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
         networkCallToLoadData();
         getIdlingResource();
-        //Firebase Auth Listener
-        final List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                /*new AuthUI.IdpConfig.PhoneBuilder().build(),*/
-                new AuthUI.IdpConfig.GoogleBuilder().build());
-                /*new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.TwitterBuilder().build())*/
-        ;
 
+        //Firebase Auth Listener
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -111,22 +104,31 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                 FirebaseUser User1 = firebaseAuth.getCurrentUser();
                 if (User1 != null) {
                     //user is signedd in
+                    Toast.makeText(mContext, "You're Singned in. Welcome to Miriam Bakery", Toast.LENGTH_SHORT).show();
                 } else {
                     //user signed out
                     /*startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
-                                    .setAvailableProviders()
-        .setTosAndPrivacyPolicyUrls("https://superapp.example.com/terms-of-service.html",
-                            "https://superapp.example.com/privacy-policy.html")
-                            .build(),
+                                    .setAvailableProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
+                                            new AuthUI.IdpConfig.FacebookBuilder().build(),
+                                            new AuthUI.IdpConfig.TwitterBuilder().build(),
+                                            new AuthUI.IdpConfig.GitHubBuilder().build(),
+                                            new AuthUI.IdpConfig.EmailBuilder().build(),
+                                            new AuthUI.IdpConfig.PhoneBuilder().build(),
+                                            new AuthUI.IdpConfig.AnonymousBuilder().build()))
+                                    .build(),
                             RC_SIGN_IN);*/
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
-                                    .setAvailableProviders(providers)
-                                    .build(), RC_SIGN_IN);
-                    
+                                    .setIsSmartLockEnabled(false)
+                                    .setAvailableProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
+                                            new AuthUI.IdpConfig.EmailBuilder().build()))
+                                    .build(),
+                            RC_SIGN_IN);
                 }
             }
         };
