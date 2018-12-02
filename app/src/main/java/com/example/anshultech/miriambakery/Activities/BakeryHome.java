@@ -24,6 +24,10 @@ import com.example.anshultech.miriambakery.Connection.ConnectionURL;
 import com.example.anshultech.miriambakery.Connection.VolleyConnectionClass;
 import com.example.anshultech.miriambakery.R;
 import com.example.anshultech.miriambakery.Utilities.SimpleIdlingResource;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -31,6 +35,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BakeryHome extends AppCompatActivity implements VolleyConnectionClass.NetworkConnectionInferface {
 
@@ -38,12 +44,16 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     private RecyclerView mRecipiListRecyclerView;
     private BakeryRecipiesListRecyclerViewAdapter mBakeryRecipiesListRecyclerViewAdapter;
     private final int RECIPIE_MASTER_LIST_LISTENER_CODE = 11;
- //   private FrameLayout tabletViewFrameLayout;
-  //  private boolean mTwoPane = false;
+    //   private FrameLayout tabletViewFrameLayout;
+    //  private boolean mTwoPane = false;
    /* private OnBackPressedListener onBackPressedListener;
     private OnBackOptionChoosePressedListener onBackOptionChoosePressedListener;*/
     private boolean doubleBackToExitPressedOnce = false;
 
+    //Firebase Authenticaion Implementation
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private static final int RC_SIGN_IN = 123;
 
     ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans;
     @Nullable
@@ -70,7 +80,11 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
         mRecipiListRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mBakeryRecipiesArrayListBeans = new ArrayList<BakeryRecipiesListBean>();
 
-       // tabletViewFrameLayout = (FrameLayout) findViewById(R.id.tabletViewFrameLayout);
+        // tabletViewFrameLayout = (FrameLayout) findViewById(R.id.tabletViewFrameLayout);
+
+        //Firebase Auth intialization
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
 
         getSupportActionBar().setTitle(getResources().getString(R.string.MiriamRecipieList));
 
@@ -81,8 +95,54 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
         networkCallToLoadData();
         getIdlingResource();
+        //Firebase Auth Listener
+        final List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                /*new AuthUI.IdpConfig.PhoneBuilder().build(),*/
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+                /*new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.TwitterBuilder().build())*/
+        ;
 
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
+                FirebaseUser User1 = firebaseAuth.getCurrentUser();
+                if (User1 != null) {
+                    //user is signedd in
+                } else {
+                    //user signed out
+                    /*startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setAvailableProviders()
+        .setTosAndPrivacyPolicyUrls("https://superapp.example.com/terms-of-service.html",
+                            "https://superapp.example.com/privacy-policy.html")
+                            .build(),
+                            RC_SIGN_IN);*/
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setAvailableProviders(providers)
+                                    .build(), RC_SIGN_IN);
+                    
+                }
+            }
+        };
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
     private void networkCallToLoadData() {
@@ -140,9 +200,9 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
 
 
                                         } else {*/
-                                            Intent intent = new Intent(mContext, BakeryIngredientsStepOptionsChooseActivity.class);
-                                            intent.putExtras(bundle);
-                                            startActivityForResult(intent, RECIPIE_MASTER_LIST_LISTENER_CODE);
+                                        Intent intent = new Intent(mContext, BakeryIngredientsStepOptionsChooseActivity.class);
+                                        intent.putExtras(bundle);
+                                        startActivityForResult(intent, RECIPIE_MASTER_LIST_LISTENER_CODE);
 
                                         /*}*/
                                     }
@@ -185,7 +245,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
                 onBackOptionChoosePressedListener.forOptionChooseBackPressed(count);
             }
         } else {*/
-            super.onBackPressed();
+        super.onBackPressed();
         /*}*/
     }
 
