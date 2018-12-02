@@ -18,7 +18,19 @@ public class BakeryStepsListBean implements Parcelable {
     @SerializedName("thumbnailURL")
     private String thumbnailURL;
 
-    public BakeryStepsListBean(){}
+//    private boolean isChecked;
+
+    public BakeryStepsListBean() {
+    }
+
+    public BakeryStepsListBean(int id, String shortDescription, String description, String videoURL, String thumbnailURL) {
+        this.id = id;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.videoURL = videoURL;
+        this.thumbnailURL = thumbnailURL;
+
+    }
 
     protected BakeryStepsListBean(Parcel in) {
         id = in.readInt();
@@ -26,6 +38,22 @@ public class BakeryStepsListBean implements Parcelable {
         description = in.readString();
         videoURL = in.readString();
         thumbnailURL = in.readString();
+        //   isChecked = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(shortDescription);
+        dest.writeString(description);
+        dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
+        // dest.writeByte((byte) (isChecked ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<BakeryStepsListBean> CREATOR = new Creator<BakeryStepsListBean>() {
@@ -80,17 +108,11 @@ public class BakeryStepsListBean implements Parcelable {
         this.thumbnailURL = thumbnailURL;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    /*public boolean isChecked() {
+        return isChecked;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(shortDescription);
-        dest.writeString(description);
-        dest.writeString(videoURL);
-        dest.writeString(thumbnailURL);
-    }
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }*/
 }

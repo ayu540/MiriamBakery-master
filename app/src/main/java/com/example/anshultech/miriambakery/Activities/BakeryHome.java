@@ -44,7 +44,7 @@ public class BakeryHome extends AppCompatActivity implements VolleyConnectionCla
     private OnBackOptionChoosePressedListener onBackOptionChoosePressedListener;*/
     private boolean doubleBackToExitPressedOnce = false;
 
-    
+
     ArrayList<BakeryRecipiesListBean> mBakeryRecipiesArrayListBeans;
     @Nullable
     private SimpleIdlingResource mIdlingResource;

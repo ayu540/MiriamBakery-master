@@ -35,12 +35,30 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_margin="@dimen/dimen_5dp"
+        android:layout_toLeftOf="@id/favoriteImageRelativeLayout"
         android:layout_toRightOf="@id/ingridentsMeasureTextView"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_20"
         tools:text="Remove from oven and cool at room temperature." />
+
+    <RelativeLayout
+        android:id="@+id/favoriteImageRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/dimen_8dp"
+        android:background="@color/colorPrimaryText"
+        android:padding="@dimen/dimen_8dp">
+
+        <ImageView
+            android:id="@+id/favoriteImageViewDetailsList"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/rating" />
+    </RelativeLayout>
 
     <View
         android:id="@+id/recipieDetailsHorizontalBar"
