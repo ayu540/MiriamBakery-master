@@ -7,20 +7,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.anshultech.miriambakery.Bean.BakeryStepsListBean;
 import com.example.anshultech.miriambakery.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavouriteViewHolder> {
 
     private Context mContext;
-    private ArrayList<BakeryStepsListBean> mBakeryStepsListBeans;
+    private List<BakeryStepsListBean> mBakeryStepsListBeans;
     ;
 
-    public FavoriteRecyclerViewAdapter(Context context, ArrayList<BakeryStepsListBean> bakeryStepsListBeans) {
+    public FavoriteRecyclerViewAdapter(Context context, List<BakeryStepsListBean> bakeryStepsListBeans) {
         this.mContext = context;
         this.mBakeryStepsListBeans = bakeryStepsListBeans;
 
@@ -56,6 +59,8 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         View recipieDetailsHorizontalBar;
         TextView ingridentsQuantityTextView;
         TextView ingridentsMeasureTextView;
+        ImageView favoriteImageViewDetailsList;
+        RelativeLayout favoriteImageRelativeLayout;
 
         public FavouriteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,6 +68,8 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
             recipieDetailsHorizontalBar = (View) itemView.findViewById(R.id.recipieDetailsHorizontalBar);
             ingridentsQuantityTextView = (TextView) itemView.findViewById(R.id.ingridentsQuantityTextView);
             ingridentsMeasureTextView = (TextView) itemView.findViewById(R.id.ingridentsMeasureTextView);
+            favoriteImageViewDetailsList = (ImageView) itemView.findViewById(R.id.favoriteImageViewDetailsList);
+            favoriteImageRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.favoriteImageRelativeLayout);
             itemView.setOnClickListener(this);
         }
 
@@ -72,6 +79,11 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         }
     }
 
+    public void updateFavoriteAdapterList(List<BakeryStepsListBean> bakeryStepsListBeans){
+        mBakeryStepsListBeans=bakeryStepsListBeans;
+        notifyDataSetChanged();
+
+    }
     public void addData(BakeryStepsListBean bakeryStepsListBean){
         this.mBakeryStepsListBeans.add(bakeryStepsListBean);
     }

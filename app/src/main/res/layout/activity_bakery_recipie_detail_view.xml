@@ -83,11 +83,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ListView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/favoriteListViewRecyClerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/lightPimaryColor"
+                    android:layout_marginBottom="@dimen/dimen_8dp"
+                    android:background="@color/colorPrimaryText"
                     android:padding="@dimen/dimen_8dp" />
 
                 <android.support.v7.widget.RecyclerView
@@ -95,8 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/favoriteListViewRecyClerView"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/colorSecondaryText"
+                    android:background="@color/colorPrimaryText"
                     android:padding="@dimen/dimen_8dp" />
             </RelativeLayout>
         </ScrollView>

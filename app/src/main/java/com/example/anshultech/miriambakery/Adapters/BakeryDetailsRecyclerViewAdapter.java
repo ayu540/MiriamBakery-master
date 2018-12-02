@@ -58,8 +58,7 @@ public class BakeryDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Baker
         String recipeDesciption = new String();
         bakeryDetailsHolder.ingridentsQuantityTextView.setVisibility(View.GONE);
         bakeryDetailsHolder.ingridentsMeasureTextView.setVisibility(View.GONE);
-
-
+        bakeryDetailsHolder.favoriteImageRelativeLayout.setVisibility(View.GONE);
         if (mListType.equalsIgnoreCase("Steps")) {
             if (mBakeryStepsListBeans.size() - 1 == position) {
                 bakeryDetailsHolder.recipieDetailsHorizontalBar.setVisibility(View.GONE);
@@ -69,7 +68,6 @@ public class BakeryDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Baker
             if (mBakeryIngridentsListBeans.size() - 1 == position) {
                 bakeryDetailsHolder.recipieDetailsHorizontalBar.setVisibility(View.GONE);
             }
-            bakeryDetailsHolder.favoriteImageRelativeLayout.setVisibility(View.GONE);
             bakeryDetailsHolder.ingridentsQuantityTextView.setVisibility(View.VISIBLE);
             bakeryDetailsHolder.ingridentsMeasureTextView.setVisibility(View.VISIBLE);
             bakeryDetailsHolder.ingridentsQuantityTextView.setText(Double.toString(mBakeryIngridentsListBeans.get(position).getQuantity()));
@@ -120,7 +118,6 @@ public class BakeryDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Baker
         @Override
         public void onClick(View v) {
             if (mListType.equalsIgnoreCase("Steps")) {
-
 
 
                 mBakeryDetailsStepsOnClickListener.onBakeryDetailsStepsCliCkListenerr(getAdapterPosition(), mBakeryStepsListBeans);
